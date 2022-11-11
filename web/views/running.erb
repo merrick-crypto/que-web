@@ -23,7 +23,7 @@
             <td>
               <a href="<%= link_to "jobs/#{job.id}" %>"><%= relative_time job.run_at %></a>
             </td>
-            <td><%= h job.humanized_job_class %></td>
+            <td><%= h job.job_type %></td>
             <td><%= job.queue %></td>
             <td><pre><%= h format_args(job) %></pre></td>
           </tr>

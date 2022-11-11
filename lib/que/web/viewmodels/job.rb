@@ -1,6 +1,6 @@
 module Que::Web::Viewmodels
   class Job < Struct.new(
-      :priority, :run_at, :id, :job_class, :error_count, :last_error_message,
+      :priority, :run_at, :id, :job_class, :job_type, :error_count, :last_error_message,
       :queue, :last_error_backtrace, :finished_at, :expired_at, :args, :data,
       :backend_pid)
 
