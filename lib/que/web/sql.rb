@@ -55,6 +55,22 @@ Que::Web::SQL = {
     WHERE
       gue_jobs.args #>> '{0, job_class}' ILIKE ($1)
   SQL
+  running_jobs: <<-SQL.freeze,
+    SELECT gue_jobs.*
+    FROM gue_jobs
+    LEFT JOIN (
+      SELECT (classid::bigint << 32) + objid::bigint AS job_id
+      FROM pg_locks
+      WHERE locktype = 'advisory'
+    ) locks ON (gue_jobs.job_id=locks.job_id)
+    WHERE locks.job_id IS NOT NULL
+    AND (
+      gue_jobs.args #>> '{0, job_class}' ILIKE ($3)
+    )
+    ORDER BY run_at, job_id
+    LIMIT $1::int
+    OFFSET $2::int
+  SQL
   failing_jobs: <<-SQL.freeze,
     SELECT gue_jobs.*
     FROM gue_jobs
